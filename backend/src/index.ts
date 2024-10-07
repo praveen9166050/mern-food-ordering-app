@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
+import myUserRoute from "./routes/myUserRoute";
 import errorHandler from "./middlewares/errorHandler";
 import CustomError from "./utils/CustomError";
 
@@ -15,6 +16,7 @@ app.get('/test', (req: Request, res: Response) => {
     message: "Hello!"
   });
 });
+app.use('/api/my/user', myUserRoute);
 app.use('*', (req: Request, res: Response, next: NextFunction) => {
   next(new CustomError(404, "Route does not exist"));
 });
