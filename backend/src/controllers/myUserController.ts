@@ -20,3 +20,22 @@ export const createCurrentUser = async (req: Request, res: Response, next: NextF
     next(error);
   }
 }
+
+export const updateCurrentUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const {name, addressLine1, country, city} = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.userId, 
+      {name, addressLine1, country, city}, 
+      {runValidators: true, new: true}
+    );
+    if (!user) {
+      throw new CustomError(404, "User not found");
+    }
+    res.status(200).json({
+      message: "USer updated successfully"
+    });
+  } catch (error) {
+    next(error);
+  }
+}
