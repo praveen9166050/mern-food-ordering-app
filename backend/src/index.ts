@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
 import myUserRoute from "./routes/myUserRoute";
+import myRestaurantroute from "./routes/myRestaurantRoute";
 import errorHandler from "./middlewares/errorHandler";
 import CustomError from "./utils/CustomError";
 import { v2 as cloudinary } from 'cloudinary';
@@ -24,6 +25,7 @@ app.get('/health', (req: Request, res: Response) => {
   });
 });
 app.use('/api/my/user', myUserRoute);
+app.use('/api/my/restaurant', myRestaurantroute);
 app.use('*', (req: Request, res: Response, next: NextFunction) => {
   next(new CustomError(404, "Route does not exist"));
 });
