@@ -35,7 +35,7 @@ function MenuItemInput({index, removeMenuItem}: Props) {
               Price <FormMessage />
             </FormLabel>
             <FormControl>
-              <Input {...field} className="bg-white" placeholder="Cheese Pizza" />
+              <Input {...field} className="bg-white" placeholder="100" />
             </FormControl>
           </FormItem>
         )}
