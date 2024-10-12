@@ -3,6 +3,21 @@ import Restaurant from "../models/Restaurant";
 import CustomError from "../utils/CustomError";
 import { v2 as cloudinary } from 'cloudinary';
 
+export const getMyRestaurant = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const restaurant = await Restaurant.findOne({user: req.userId});
+    if (!restaurant) {
+      throw new CustomError(404, "Restaurant for this user does not exist");
+    }
+    res.status(200).json({
+      message: "Restaurant fetched successfully",
+      restaurant: restaurant.toObject()
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const createMyRestaurant = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const existingrestaurant = await Restaurant.findOne({user: req.userId});
