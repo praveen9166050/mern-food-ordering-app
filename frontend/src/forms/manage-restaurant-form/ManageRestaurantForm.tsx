@@ -32,7 +32,11 @@ const formSchema = z.object({
       invalid_type_error: "Price must be a number"
     }).min(1, "Price is required")
   })),
-  imageFile: z.instanceof(File, {message: "Image is required"})
+  imageUrl: z.string().optional(),
+  imageFile: z.instanceof(File, {message: "Image is required"}).optional()
+}).refine(data => data.imageUrl || data.imageFile, {
+  message: "Either imageUrl or imageFile is required",
+  path: ["imageFile"]
 });
 
 type RestaurantFormData = z.infer<typeof formSchema>;
@@ -74,7 +78,9 @@ function ManageRestaurantForm({restaurant, onSave, isLoading}: Props) {
       formData.append(`menuItems[${i}][name]`, menuItem.name);
       formData.append(`menuItems[${i}][price]`, menuItem.price.toString());
     });
-    formData.append("imageFile", formDataJson.imageFile);
+    if (formDataJson.imageFile) {
+      formData.append("imageFile", formDataJson.imageFile);
+    }
 
     onSave(formData);
   }

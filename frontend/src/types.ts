@@ -7,7 +7,7 @@ export type User = {
   country: string
 }
 
-export type GetUserResponse = {
+export type UserResponse = {
   message: string,
   user: User
 }
@@ -31,7 +31,7 @@ export type Restaurant = {
   imageUrl: string
 }
 
-export type GetRestaurantResponse = {
+export type RestaurantResponse = {
   message: string,
   restaurant: Restaurant
 }
