@@ -2,8 +2,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Navigate, Outlet } from "react-router-dom";
 
 function ProtectedRoute() {
-  const {isAuthenticated} = useAuth0();
-  // console.log("Auth", isAuthenticated);
+  const {isAuthenticated, isLoading} = useAuth0();
+  if (isLoading) {
+    return "Loading...";
+  }
   return isAuthenticated ? <Outlet /> : <Navigate to={"/"} replace />
 }
 
