@@ -1,5 +1,5 @@
 import express from "express";
-import { createMyRestaurant, getMyRestaurant } from "../controllers/myRestaurantController";
+import { createMyRestaurant, getMyRestaurant, updateMyRestaurant } from "../controllers/myRestaurantController";
 import multer from "multer";
 import { jwtCheck, jwtParse } from "../middlewares/auth";
 import { validateMyRestaurantRequest } from "../middlewares/validator";
@@ -23,6 +23,15 @@ router.post(
   jwtCheck, 
   jwtParse, 
   createMyRestaurant
+);
+
+router.put(
+  '/', 
+  upload.single("imageFile"), 
+  validateMyRestaurantRequest, 
+  jwtCheck, 
+  jwtParse, 
+  updateMyRestaurant
 );
 
 export default router;

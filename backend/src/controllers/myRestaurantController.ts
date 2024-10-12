@@ -41,3 +41,33 @@ export const createMyRestaurant = async (req: Request, res: Response, next: Next
     next(error);
   }
 }
+
+export const updateMyRestaurant = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const restaurant = await Restaurant.findOne({user: req.userId});
+    if (!restaurant) {
+      throw new CustomError(404, "Restaurant for this user does not exist");
+    }
+    restaurant.restaurantName = req.body.restaurantName;
+    restaurant.city = req.body.city;
+    restaurant.country = req.body.country;
+    restaurant.deliveryPrice = req.body.deliveryPrice;
+    restaurant.estimatedDeliveryTime = req.body.estimatedDeliveryTime;
+    restaurant.cuisines = req.body.cuisines;
+    restaurant.menuItems = req.body.menuItems;
+    if (req.file) {
+      const image = req.file as Express.Multer.File;
+      const base64Image = Buffer.from(image.buffer).toString("base64");
+      const dataURI = `data:${image.mimetype};base64,${base64Image}`;
+      const uploadResponse = await cloudinary.uploader.upload(dataURI);
+      restaurant.imageUrl = uploadResponse.url;
+    }
+    await restaurant.save();
+    res.status(200).json({
+      message: "Restaurant updated successfully",
+      restaurant: restaurant.toObject()
+    });
+  } catch (error) {
+    next(error);
+  }
+}
