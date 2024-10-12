@@ -16,14 +16,14 @@ function ImageSection() {
       <div className="flex flex-col gap-8 w-[50%]">
         <FormField 
           control={control} 
-          name="imagefile" 
+          name="imageFile" 
           render={({field}) => (
             <FormItem>
               <FormControl>
                 <Input 
                   type="file" 
                   accept=".jpg, .jpeg, .png" 
-                  onChange={e => field.onChange(e.target.files?.[0] || null)}
+                  onChange={e => field.onChange(e.target.files ? e.target.files[0] : null)}
                   className="bg-white" 
                 />
               </FormControl>

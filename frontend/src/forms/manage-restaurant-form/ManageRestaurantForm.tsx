@@ -41,6 +41,7 @@ type Props = {
 }
 
 function ManageRestaurantForm({onSave, isLoading}: Props) {
+  console.log("isLoading:", isLoading);
   const form = useForm<RestaurantFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -69,7 +70,10 @@ function ManageRestaurantForm({onSave, isLoading}: Props) {
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-gray-50 p-10 rounded-lg">
+      <form 
+        onSubmit={form.handleSubmit(onSubmit, (errors) => console.log("HandleSubmitErrors:", errors))} 
+        className="space-y-8 bg-gray-50 p-10 rounded-lg"
+      >
         <DetailsSection />
         <Separator />
         <CuisinesSection />
