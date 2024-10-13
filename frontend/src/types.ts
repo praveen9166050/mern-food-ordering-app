@@ -35,3 +35,12 @@ export type RestaurantResponse = {
   message: string,
   restaurant: Restaurant
 }
+
+export type SearchRestaurantResponse = {
+  data: Restaurant[],
+  pagination: {
+    total: number,
+    page: number,
+    pages: number
+  }
+}
