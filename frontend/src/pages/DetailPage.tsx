@@ -44,6 +44,9 @@ function DetailPage() {
       });
     });
   }
+  const removeFromCart = (cartItem: CartItem) => {
+    setCartItems((prevState) => prevState.filter(item => item._id !== cartItem._id));
+  }
   if (isLoading || !restaurant) {
     return "Loading...";
   }
@@ -62,7 +65,7 @@ function DetailPage() {
         </div>
         <div>
           <Card>
-            <OrderSummary restaurant={restaurant} cartItems={cartItems} />
+            <OrderSummary restaurant={restaurant} cartItems={cartItems} removeFromCart={removeFromCart} />
           </Card>
         </div>
       </div>
