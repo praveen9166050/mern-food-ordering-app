@@ -4,6 +4,7 @@ import OrderSummary from "@/components/OrderSummary";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card } from "@/components/ui/card";
+import { MenuItem as MenuItemType } from "@/types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -18,6 +19,31 @@ function DetailPage() {
   const {restaurantId} = useParams();
   const {restaurant, isLoading} = useGetRestaurant(restaurantId);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const addToCart = (menuItem: MenuItemType) => {
+    setCartItems((prevState) => {
+      const existingCartItem = prevState.find(item => item._id === menuItem._id);
+      if (!existingCartItem) {
+        return [
+          ...prevState, 
+          {
+            _id: menuItem._id, 
+            name: menuItem.name, 
+            price: menuItem.price, 
+            quantity: 1
+          }
+        ];
+      }
+      return prevState.map(item => {
+        if (item._id === menuItem._id) {
+          return {
+            ...item, 
+            quantity: item.quantity + 1
+          }
+        }
+        return item;
+      });
+    });
+  }
   if (isLoading || !restaurant) {
     return "Loading...";
   }
@@ -31,7 +57,7 @@ function DetailPage() {
           <RestaurantInfo restaurant={restaurant} />
           <span className="text-2xl font-bold tracking-tight">Menu</span>
           {restaurant.menuItems.map((menuItem, i) => (
-            <MenuItem key={i} menuItem={menuItem} />
+            <MenuItem key={i} menuItem={menuItem} addToCart={() => addToCart(menuItem)} />
           ))}
         </div>
         <div>

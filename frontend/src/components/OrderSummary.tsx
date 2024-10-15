@@ -30,6 +30,7 @@ function OrderSummary({restaurant, cartItems}: Props) {
               <Badge variant={"outline"} className="mr-2">
                 {item.quantity}
               </Badge>
+              {item.name}
             </span>
             <span className="flex items-center gap-1">
               &#8377; {item.price * item.quantity}
