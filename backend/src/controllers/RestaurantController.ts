@@ -1,5 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import Restaurant from "../models/Restaurant";
+import CustomError from "../utils/CustomError";
+
+export const getRestaurant = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const {restaurantId} = req.params;
+    const restaurant = await Restaurant.findById(restaurantId);
+    if (!restaurant) {
+      throw new CustomError(404, "Restaurant not found");
+    }
+    res.status(200).json({
+      message: "Restaurant fetched successfully",
+      restaurant: restaurant.toObject()
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 
 export const searchRestaurants = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
