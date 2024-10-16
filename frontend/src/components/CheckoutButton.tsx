@@ -41,7 +41,13 @@ function CheckoutButton({onCheckOut, disabled}: Props) {
         <Button disabled={disabled} className="bg-orange-500 flex-1">Go to checkout</Button>
       </DialogTrigger>
       <DialogContent className="max-w-[425px] md:min-w-[700px] bg-gray-50">
-        <UserProfileForm currentUser={currentUser} onSave={onCheckOut} isLoading={false} />
+        <UserProfileForm 
+          currentUser={currentUser} 
+          onSave={onCheckOut} 
+          isLoading={false} 
+          title="Confirm Delivery Details"
+          buttonText="Continue to payment"
+        />
       </DialogContent>
     </Dialog>
   );
