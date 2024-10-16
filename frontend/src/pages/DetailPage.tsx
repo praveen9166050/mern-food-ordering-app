@@ -5,6 +5,7 @@ import OrderSummary from "@/components/OrderSummary";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardFooter } from "@/components/ui/card";
+import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
 import { MenuItem as MenuItemType } from "@/types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -59,6 +60,9 @@ function DetailPage() {
       return updatedCartItems;
     });
   }
+  const onCheckOut = (userFormData: UserFormData) => {
+    console.log("userFormData:", userFormData);
+  }
   if (isLoading || !restaurant) {
     return "Loading...";
   }
@@ -79,7 +83,10 @@ function DetailPage() {
           <Card>
             <OrderSummary restaurant={restaurant} cartItems={cartItems} removeFromCart={removeFromCart} />
             <CardFooter>
-              <CheckoutButton />
+              <CheckoutButton 
+                onCheckOut={onCheckOut}
+                disabled={cartItems.length === 0} 
+              />
             </CardFooter>
           </Card>
         </div>

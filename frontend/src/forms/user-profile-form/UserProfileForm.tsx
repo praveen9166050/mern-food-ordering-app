@@ -16,7 +16,7 @@ const formSchema = z.object({
   city: z.string({required_error: "City is required"}).min(1, "City is required")
 });
 
-type UserFormData = z.infer<typeof formSchema>;
+export type UserFormData = z.infer<typeof formSchema>;
 
 type Props = {
   currentUser: User,
@@ -25,7 +25,6 @@ type Props = {
 }
 
 function UserProfileForm({currentUser, onSave, isLoading}: Props) {
-  console.log("Current User:", currentUser);
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: currentUser
