@@ -24,6 +24,18 @@ type CheckoutSessionRequest = {
   restaurantId: string
 }
 
+export const getMyOrders = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const orders = await Order.find({user: req.userId}).populate("restaurant").populate("user");
+    res.status(200).json({
+      message: "Orders fetched successfully",
+      orders
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const stripeWebhookHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   let event;
   try {
