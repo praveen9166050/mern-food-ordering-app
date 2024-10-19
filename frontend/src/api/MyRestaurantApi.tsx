@@ -99,6 +99,6 @@ export const useGetMyRestaurantOrders = () => {
   if (error) {
     toast.error("Unable to fetch restaurant orders");
   }
-  const restaurant = data?.orders;
-  return {restaurant, isLoading};
+  const orders = data?.orders;
+  return {orders, isLoading};
 }
