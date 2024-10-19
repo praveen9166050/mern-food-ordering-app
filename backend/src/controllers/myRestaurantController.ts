@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Restaurant from "../models/Restaurant";
 import CustomError from "../utils/CustomError";
 import { v2 as cloudinary } from 'cloudinary';
+import Order from "../models/Order";
 
 export const getMyRestaurant = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -66,6 +67,22 @@ export const updateMyRestaurant = async (req: Request, res: Response, next: Next
     res.status(200).json({
       message: "Restaurant updated successfully",
       restaurant: restaurant.toObject()
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const getMyRestaurantOrders = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const restaurant = await Restaurant.findOne({user: req.userId});
+    if (!restaurant) {
+      throw new CustomError(404, "Restaurant not found");
+    }
+    const orders = await Order.find({restaurant: restaurant._id}).populate("restaurant").populate("user");
+    res.status(200).json({
+      message: "Restaurant orders fetched successfully",
+      orders
     });
   } catch (error) {
     next(error);
