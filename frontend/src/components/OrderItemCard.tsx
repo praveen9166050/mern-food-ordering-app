@@ -1,16 +1,24 @@
-import { Order } from "@/types";
+import { Order, OrderStatus } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Separator } from "./ui/separator";
 import { Badge } from "./ui/badge";
 import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { ORDER_STATUS } from "@/config/order-status-config";
+import { useUpdateOrderStatus } from "@/api/MyRestaurantApi";
+import { useEffect, useState } from "react";
 
 type Props = {
   order: Order
 }
 
 function OrderItemCard({order}: Props) {
+  const {updateOrderStatus, isLoading} = useUpdateOrderStatus();
+  const [status, setStatus] = useState<OrderStatus>(order.status);
+
+  useEffect(() => {
+    setStatus(order.status);
+  }, [order.status]);
 
   const getTime = () => {
     const orderDateTime = new Date(order.createdAt);
@@ -18,6 +26,11 @@ function OrderItemCard({order}: Props) {
     const minutes = orderDateTime.getMinutes();
     const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes;
     return `${hours}:${paddedMinutes}`;
+  }
+
+  const handleOrderstatusChange = (newStatus: OrderStatus) => {
+    updateOrderStatus({orderId: order._id as string, status: newStatus});
+    setStatus(newStatus);
   }
 
   return (
@@ -56,7 +69,11 @@ function OrderItemCard({order}: Props) {
         </div>
         <div className="flex flex-col space-y-1.5">
           <Label htmlFor="status">What is the status of this order?</Label>
-          <Select>
+          <Select 
+            value={status}
+            disabled={isLoading} 
+            onValueChange={(value) => handleOrderstatusChange(value as OrderStatus)}
+          >
             <SelectTrigger id="status">
               <SelectValue placeholder="status" />
             </SelectTrigger>
