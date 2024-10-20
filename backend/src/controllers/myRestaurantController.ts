@@ -88,3 +88,27 @@ export const getMyRestaurantOrders = async (req: Request, res: Response, next: N
     next(error);
   }
 }
+
+export const updateOrderStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const {orderId} = req.params;
+    const {status} = req.body;
+    const order = await Order.findById(orderId);
+    if (!order) {
+      throw new CustomError(404, "Order not foumd");
+    }
+    const restaurant = await Restaurant.findById(order.restaurant);
+    if (restaurant?.user?._id.toString() !== req.userId) {
+      res.status(401).send();
+      return;
+    }
+    order.status = status;
+    await order.save();
+    res.status(200).json({
+      message: "Orders status updated successfully",
+      order
+    });
+  } catch (error) {
+    next(error);
+  }
+}
