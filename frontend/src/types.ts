@@ -89,3 +89,8 @@ export type OrdersResponse = {
   message: string,
   orders: Order[]
 }
+
+export type OrderResponse = {
+  message: string,
+  orders: Order
+}
